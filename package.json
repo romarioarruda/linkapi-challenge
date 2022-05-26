@@ -1,0 +1,47 @@
+{
+  "name": "linkapi-challenge",
+  "version": "0.0.1",
+  "private": true,
+  "main": "src/index.ts",
+  "scripts": {
+    "prepare": "husky install",
+    "check": "prettier --check node/**/*.ts",
+    "start": "node-dev src/index.ts"
+  },
+  "author": "Romário Arruda <romarioarruda98@gmail.com>",
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "prepare-commit-msg": "exec < /dev/tty && node_modules/.bin/cz --hook || true"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.ts": "prettier --write --ignore-unknown"
+  },
+  "dependencies": {
+    "axios": "^0.27.2",
+    "dotenv": "^16.0.1",
+    "node-fetch": "^3.1.0",
+    "node-schedule": "^2.1.0",
+    "xml-js": "^1.6.11"
+  },
+  "devDependencies": {
+    "@types/node": "^16.11.1",
+    "@types/node-fetch": "^3.0.3",
+    "@types/node-schedule": "^1.3.2",
+    "cz-conventional-changelog": "^3.0.1",
+    "eslint": "^7.16.0",
+    "eslint-config-vtex": "^12.9.3",
+    "husky": "^7.0.4",
+    "lint-staged": "^10.5.3",
+    "node-dev": "^7.4.3",
+    "prettier": "2.6.2",
+    "ts-node": "^10.8.0",
+    "typescript": "^4.4.4"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
+}

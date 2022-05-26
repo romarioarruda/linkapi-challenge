@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "ES6",
+    "target": "es2017",
     "module": "commonjs",
     "moduleResolution": "node",
     "resolveJsonModule": true,
@@ -10,6 +10,8 @@
     "removeComments": true,
     "strictNullChecks": true,
     "experimentalDecorators": true,
+    "useUnknownInCatchVariables": false,
+    "strict": true
   },
   "include": [
     "src/**/*"
