@@ -1,8 +1,12 @@
 import { http } from '../../http/axios'
 import convertXmlToJson from '../../adapters/convert-xml-to-json'
-import { ILinkApiUser } from '../../interfaces/ILinkApiUser'
+import {
+  ILinkApiUser,
+  ILinkApiAddress,
+  ILinkApiContact,
+} from '../../interfaces/ILinkApi'
 
-export default class LinkApiDesafioTech {
+export default class LinkApiUsers {
   private responseType: any = {
     'application/xhtml+xml': 'xml',
   }
@@ -24,19 +28,31 @@ export default class LinkApiDesafioTech {
     return data.usersList.item ?? []
   }
 
-  public async getUserAddress(userId: number): Promise<void> {
+  public async getUserAddress(userId: number): Promise<ILinkApiAddress> {
     const address = await http.get(
       `${process.env.API_URL}/users/${userId}/address`,
     )
 
-    console.log('USERS:: ', address.data)
+    const contentType = address.headers['content-type']
+
+    const { data } = this.responseType[contentType]
+      ? convertXmlToJson(address.data)
+      : address.data
+
+    return data.item ? data.item[0] : null
   }
 
-  public async getUserContact(userId: number): Promise<void> {
+  public async getUserContact(userId: number): Promise<ILinkApiContact> {
     const contacts = await http.get(
       `${process.env.API_URL}/users/${userId}/contacts`,
     )
 
-    console.log('USERS:: ', contacts.data)
+    const contentType = contacts.headers['content-type']
+
+    const { data } = this.responseType[contentType]
+      ? convertXmlToJson(contacts.data)
+      : contacts.data
+
+    return data.item ?? null
   }
 }
