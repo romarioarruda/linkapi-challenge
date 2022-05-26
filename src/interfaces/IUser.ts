@@ -1,8 +1,8 @@
-import { IAddress } from './IAddress'
-
 export interface IUser {
+  id: number
   fullName: string
   email: string
-  address: IAddress | null
-  phoneNumber: string | null
+  address: string
+  addressNumber: number
+  phoneNumber: string
 }

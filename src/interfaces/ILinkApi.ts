@@ -1,27 +1,31 @@
+type Text = {
+  _text: string
+}
+
 export interface ILinkApiUser {
-  createdAt: string
-  firstName: string
-  avatar: string
-  email: string
-  lastName: string
-  id: number
+  createdAt: Text
+  firstName: Text
+  avatar: Text
+  email: Text
+  lastName: Text
+  id: Text
 }
 
 export interface ILinkApiAddress {
-  street: string
-  city: string
-  state: string
-  zipcode: string
-  country: string
-  number: number
-  id: number
-  userId: number
+  street: Text
+  city: Text
+  state: Text
+  zipcode: Text
+  country: Text
+  number: Text
+  id: Text
+  userId: Text
 }
 
 export interface ILinkApiContact {
-  name: string
-  phoneNumber: string
-  email: string
-  id: number
-  userId: number
+  name: Text
+  phoneNumber: Text
+  email: Text
+  id: Text
+  userId: Text
 }
