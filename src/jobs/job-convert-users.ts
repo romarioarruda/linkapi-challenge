@@ -19,7 +19,7 @@ const api = new LinkApiUsers()
 async function runJob(): Promise<void> {
   console.log('Iniciando busca por usuários')
   const dbUser = new MongoUserRepository()
-  const users = new Users()
+  const usersEntity = new Users()
   const apiUserList = await api.getUsers()
 
   for (let user of apiUserList) {
@@ -37,7 +37,7 @@ async function runJob(): Promise<void> {
       api.getUserContact(userId),
     ])
 
-    users.push(
+    usersEntity.push(
       `${user.firstName._text} ${user.lastName._text}`,
       user.email._text,
       address?.street._text || '',
@@ -46,7 +46,7 @@ async function runJob(): Promise<void> {
     )
   }
 
-  await dbUser.insertMany(users.lista)
+  await dbUser.insertMany(usersEntity.lista)
 
   console.log('Busca finalizada.')
 }
