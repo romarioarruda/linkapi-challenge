@@ -4,7 +4,6 @@ export class Users {
   public readonly lista: IUser[] = []
 
   public push(
-    id: number,
     fullName: string,
     email: string,
     address: string,
@@ -12,7 +11,6 @@ export class Users {
     phoneNumber: string,
   ): void {
     this.lista.push({
-      id,
       fullName,
       email,
       address,
