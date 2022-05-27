@@ -1,55 +1,30 @@
 version: '3'
 services:
-  mongodb:
+  dbmongo:
     image: mongo
     container_name: linkapi_mongodb
     restart: always
     ports:
-      - "27017"
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: "${MONGO_USERNAME}"
-      MONGO_INITDB_ROOT_PASSWORD: "${MONGO_PASSWORD}"
+      - "27017:27017"
     volumes:
       - mongo_data:/data/db
-    networks:
-      - linkapi-network
-  mongoadmin:
-    image: mongo-express
-    container_name: linkapi_mongo_admin
-    restart: always
-    ports:
-      - 8081:8081
-    environment:
-      ME_CONFIG_MONGODB_ENABLE_ADMIN: "false"
-      ME_CONFIG_MONGODB_ADMINUSERNAME: "${MONGO_ADMINUSERNAME}"
-      ME_CONFIG_MONGODB_ADMINPASSWORD: "${MONGO_ADMINPASSWORD}"
-      ME_CONFIG_MONGODB_URL: "${MONGO_HOST}"
-    networks:
-      - linkapi-network
-    depends_on:
-      - mongodb
-  app:
-    build:
-      dockerfile: ./docker/app.dockerfile
-      context: .
-    image: linkapi/app
-    container_name: linkapi_app
-    restart: always
-    ports:
-      - "4000"
-    command:
-      - npm
-      - start
-    volumes:
-      - ./:/linkapi/
-      - node_modules:/linkapi/node_modules
-    networks:
-      - linkapi-network
-    depends_on:
-      - mongodb
+  # app:
+  #   build:
+  #     dockerfile: ./docker/app.dockerfile
+  #     context: .
+  #   image: linkapi/app
+  #   container_name: linkapi_app
+  #   restart: always
+  #   ports:
+  #     - "4000"
+  #   command:
+  #     - npm
+  #     - start
+  #   volumes:
+  #     - ./:/linkapi/
+  #     - node_modules:/linkapi/node_modules
+  #   depends_on:
+  #     - dbmongo
 volumes:
   mongo_data: {}
   node_modules: {}
-networks:
-  linkapi-network:
-    driver: bridge
