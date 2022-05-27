@@ -4,6 +4,7 @@ import { MesesDoAno } from '../enums/months-of-year'
 import { HorasDoDia } from '../enums/hours-of-day'
 import LinkApiUsers from '../clients/linkapi/linkapi-users'
 import { Users } from '../domain/Users'
+import MongoUserRepository from '../repositories/mongo-user-repository'
 
 const MINUTE = '*/5' //  => roda a cada 5 minutos
 const HOUR = HorasDoDia.TODAS
@@ -17,31 +18,40 @@ const api = new LinkApiUsers()
 
 async function runJob(): Promise<void> {
   console.log('Iniciando busca por usuários')
+  const dbUser = new MongoUserRepository()
   const users = new Users()
   const apiUserList = await api.getUsers()
 
   for (let user of apiUserList) {
+    const hasUser = await dbUser.exists(user.email._text)
+    if (hasUser) {
+      console.log('user já existe, pulando...')
+      continue
+    }
+
     const userId = Number(user.id._text)
     console.log(`User: ${userId}`)
+
     const [address, contact] = await Promise.all([
       api.getUserAddress(userId),
       api.getUserContact(userId),
     ])
 
     users.push(
-      userId,
       `${user.firstName._text} ${user.lastName._text}`,
       user.email._text,
-      address.street._text,
-      Number(address.number._text),
-      contact.phoneNumber._text,
+      address?.street._text || '',
+      Number(address?.number._text) || 0,
+      contact?.phoneNumber._text || '',
     )
   }
 
-  console.log('USERS: ', users.lista)
+  await dbUser.insertMany(users.lista)
+
+  console.log('Busca finalizada.')
 }
 
-export default function jobConvertUsers(): void {
+export default async function jobConvertUsers() {
   runJob()
 
   schedule.scheduleJob(TIMER, () => runJob())
