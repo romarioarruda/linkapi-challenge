@@ -38,6 +38,23 @@ Base URL: `http://localhost:4000`
 
 **Lista de usuários**:
 
-MÉTODO: `GET`
+Método: `GET`
 
-ENDPOINT: `/api/v1/users`
+Endpoint: `/api/v1/users`
+
+Exemplo de resposta:
+
+```
+[
+  {
+    _id	"62915664205181efd4869730"
+    fullName	"Nakia Towne"
+    email	"Melissa.Stamm84@hotmail.com"
+    address	"Leuschke Mountain"
+    addressNumber	57
+    phoneNumber	"976-271-2917"
+  }
+]
+```
+
+##
