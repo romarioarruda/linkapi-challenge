@@ -15,6 +15,14 @@ export default class MongoFolderRepository implements FolderRepository {
     }
   }
 
+  public async findMany(): Promise<IFolder[]> {
+    try {
+      return Folders.find({}).exec()
+    } catch (error) {
+      return []
+    }
+  }
+
   public async insertOne(folder: IFolder): Promise<boolean> {
     try {
       const newFolder = new Folders(folder)
