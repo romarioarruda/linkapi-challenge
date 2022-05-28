@@ -1,14 +1,29 @@
 import { IFolder } from '../../interfaces/IFolder'
+import { IFile } from '../../interfaces/IFile'
 import MongoFolderRepository from '../../repositories/mongo-folder-repository'
+import MongoFileRepository from '../../repositories/mongo-file-repository'
 
-const repository = new MongoFolderRepository()
+const folderRepo = new MongoFolderRepository()
+const fileRepo = new MongoFileRepository()
 
 const existsFolder = async (name: string) => {
-  return repository.exists(name)
+  return folderRepo.exists(name)
 }
 
 const insertFolder = async (folder: IFolder) => {
-  return repository.insertOne(folder)
+  return folderRepo.insertOne(folder)
 }
 
-export { existsFolder, insertFolder }
+const listFolders = async () => {
+  return folderRepo.findMany()
+}
+
+const findFolder = async (name: string) => {
+  return folderRepo.findOne(name)
+}
+
+const insertFile = async (file: IFile) => {
+  return fileRepo.insertOne(file)
+}
+
+export { existsFolder, insertFolder, listFolders, findFolder, insertFile }

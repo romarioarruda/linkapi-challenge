@@ -7,3 +7,12 @@ export interface IGoFileFolder {
   childs: Array<any>
   code: string
 }
+
+export interface IGoFileFile {
+  downloadPage: string
+  code: string
+  parentFolder: string
+  fileId: string
+  fileName: string
+  md5: string
+}

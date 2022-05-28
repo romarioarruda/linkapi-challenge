@@ -47,14 +47,80 @@ Exemplo de resposta:
 ```
 [
   {
-    _id	"62915664205181efd4869730"
-    fullName	"Nakia Towne"
-    email	"Melissa.Stamm84@hotmail.com"
-    address	"Leuschke Mountain"
-    addressNumber	57
-    phoneNumber	"976-271-2917"
+    _id:	String
+    fullName:	String
+    email:	String
+    address:	String
+    addressNumber:	Number
+    phoneNumber:	String
   }
 ]
 ```
 
 ##
+
+### Gerenciamento de arquivos
+##
+
+**Criar pasta**:
+
+Método: `POST`
+
+Endpoint: `/api/v1/createFolder`
+
+Payload:
+
+```
+{
+  "name": "Nome_da_pasta"
+}
+```
+
+Exemplo de resposta:
+
+```
+{
+  message: String
+}
+```
+
+##
+
+**Upload de arquivos**:
+
+Método: `POST`
+
+Endpoint: `/api/v1/uploadFile`
+
+POST: https://store3.gofile.io/uploadFile
+
+Payload Form-data:
+
+```
+folderName: "Nome_da_pasta"
+file: Algum_arquvo
+```
+
+##
+
+FORM FIELDS:
+
+token: OS13IqWgviSFtmoXFltxXmsetZQ45mbx
+
+folderId: pegar info do banco de dados
+
+FORM FILE:
+
+file
+
+const request = `
+    curl -X POST \
+
+     --url 'https://store3.gofile.io/uploadFile' \
+
+     --header 'Content-Type: multipart/form-data'
+
+     --data-raw 'token=${process.env.GOFILE_TOKEN}&folderId=${folderParent}'
+
+     -F file=${filePath}
+    `

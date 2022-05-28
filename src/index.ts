@@ -8,15 +8,17 @@ import './application/api_v1'
 
 // Funçoes de inicialização do sistema
 mongoOpenConnection()
+
 jobConvertUsers()
 
 //Garantindo o uptime do serviço
-//em caso de exception não tratado que quebra a execução do software
+
+//1 - Em caso de erro não tratado que quebraria a execução do software
 process.on('uncaughtException', (error, origin) => {
   console.log(`\n${origin} signal received: \n ${error}`)
 })
 
-//Em caso de promises não tratadas, o sistema lança um warning que pode quebrar a execução.
+//2- Em caso de promises não tratadas, o sistema lança um warning que poderia quebrar a execução.
 process.on('unhandledRejection', (error) => {
   console.log(`\n unhandledRejection signal received: \n ${error}`)
 })
