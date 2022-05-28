@@ -4,6 +4,7 @@ import { IGoFileFolder } from '../../../interfaces/IGoFileApi'
 import {
   existsFolder,
   insertFolder,
+  listFolders,
 } from '../../../services/files/files-service'
 
 const gofileRouters = express.Router()
@@ -35,5 +36,18 @@ gofileRouters.post(
     }
   },
 )
+
+gofileRouters.get('/api/v1/folders', async (_req, res: Response) => {
+  const folders = await listFolders()
+
+  if (!folders) {
+    return res.json({
+      total: 0,
+      folders: [],
+    })
+  }
+
+  res.json(folders)
+})
 
 export default gofileRouters
