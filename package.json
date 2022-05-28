@@ -6,8 +6,8 @@
   "scripts": {
     "prepare": "husky install",
     "check": "prettier --check node/**/*.ts",
-    "start": "node-dev src/index.ts",
-    "prod": "ts-node src/index.ts"
+    "dev": "node-dev src/index.ts",
+    "start": "ts-node src/index.ts"
   },
   "author": "Romário Arruda <romarioarruda98@gmail.com>",
   "husky": {

@@ -8,23 +8,23 @@ services:
       - "27017:27017"
     volumes:
       - mongo_data:/data/db
-  # app:
-  #   build:
-  #     dockerfile: ./docker/app.dockerfile
-  #     context: .
-  #   image: linkapi/app
-  #   container_name: linkapi_app
-  #   restart: always
-  #   ports:
-  #     - "4000"
-  #   command:
-  #     - npm
-  #     - start
-  #   volumes:
-  #     - ./:/linkapi/
-  #     - node_modules:/linkapi/node_modules
-  #   depends_on:
-  #     - dbmongo
+  app:
+    build:
+      dockerfile: ./docker/app.dockerfile
+      context: .
+    image: linkapi/app
+    container_name: linkapi_app
+    restart: always
+    ports:
+      - "4000"
+    command:
+      - npm
+      - start
+    volumes:
+      - ./:/linkapi/
+      - node_modules:/linkapi/node_modules
+    depends_on:
+      - dbmongo
 volumes:
   mongo_data: {}
   node_modules: {}
