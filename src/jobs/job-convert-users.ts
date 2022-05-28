@@ -52,5 +52,7 @@ async function runJob(): Promise<void> {
 }
 
 export default async function jobConvertUsers() {
+  runJob()
+
   schedule.scheduleJob(TIMER, () => runJob())
 }
