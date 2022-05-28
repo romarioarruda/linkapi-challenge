@@ -1,12 +1,12 @@
 import express, { Request, Response } from 'express'
 import { getUsers } from '../../../services/users/users-service'
 
-const usersRouter = express.Router()
+const usersRouters = express.Router()
 
-usersRouter.get('/api/v1/users', async (_req: Request, res: Response) => {
+usersRouters.get('/api/v1/users', async (_req: Request, res: Response) => {
   const users = await getUsers()
 
-  if (users) {
+  if (!users) {
     return res.json({
       total: 0,
       users: [],
@@ -16,4 +16,4 @@ usersRouter.get('/api/v1/users', async (_req: Request, res: Response) => {
   res.json(users)
 })
 
-export default usersRouter
+export default usersRouters
