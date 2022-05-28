@@ -26,4 +26,15 @@ const insertFile = async (file: IFile) => {
   return fileRepo.insertOne(file)
 }
 
-export { existsFolder, insertFolder, listFolders, findFolder, insertFile }
+const listFiles = async () => {
+  return fileRepo.findMany()
+}
+
+export {
+  existsFolder,
+  insertFolder,
+  listFolders,
+  findFolder,
+  insertFile,
+  listFiles,
+}

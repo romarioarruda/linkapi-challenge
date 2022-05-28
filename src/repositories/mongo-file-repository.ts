@@ -11,9 +11,9 @@ export default class MongoFileRepository implements FileRepository {
     }
   }
 
-  public async insertOne(folder: IFile): Promise<boolean> {
+  public async insertOne(file: IFile): Promise<boolean> {
     try {
-      const newFile = new Files(folder)
+      const newFile = new Files(file)
 
       await newFile.save()
 

@@ -11,6 +11,7 @@ import {
   listFolders,
   findFolder,
   insertFile,
+  listFiles,
 } from '../../../services/files/files-service'
 
 const fileRouters = express.Router()
@@ -83,12 +84,13 @@ fileRouters.post(
       formData.append('token', process.env.GOFILE_TOKEN)
       formData.append('folderId', getFolder.folderId)
       formData.append('file', stream)
-      const resp: IGoFileFile = (await gofile.UploadFile(formData)).data
+      const { data } = await gofile.UploadFile(formData)
+      const fileSaved = data.data as IGoFileFile
 
       await insertFile({
-        folderParentId: resp.parentFolder,
-        fileId: resp.fileId,
-        name: resp.fileName,
+        folderParentId: fileSaved.parentFolder,
+        fileId: fileSaved.fileId,
+        name: fileSaved.fileName,
       })
 
       unlink(path, (err) => {
@@ -106,5 +108,18 @@ fileRouters.post(
     }
   },
 )
+
+fileRouters.get('/api/v1/files', async (_req, res: Response) => {
+  const files = await listFiles()
+
+  if (!files.length) {
+    return res.json({
+      total: 0,
+      files: [],
+    })
+  }
+
+  res.json(files)
+})
 
 export default fileRouters
