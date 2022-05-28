@@ -26,7 +26,8 @@ Containers:
 **Funcionamente**:
 
 - Acesse a aplicação em http://localhost:4000
-- O serviço de atualização dos usuários roda a cada 5 minutos (todos os dias)
+- O serviço de atualização dos usuários é ativado assim que o servidor sobe
+- Depois disso, o serviço roda a cada 5 minutos (todos os dias)
 
 ##
 
@@ -86,41 +87,61 @@ Exemplo de resposta:
 
 ##
 
+
+**Listar pastas**:
+
+Método: `GET`
+
+Endpoint: `/api/v1/folders`
+
+Exemplo de resposta:
+
+```
+[
+  {
+    _id:	String
+    folderId:	String
+    name:	String
+  }
+]
+```
+
+##
+
+
 **Upload de arquivos**:
 
 Método: `POST`
 
 Endpoint: `/api/v1/uploadFile`
 
-POST: https://store3.gofile.io/uploadFile
-
-Payload Form-data:
+Form-data:
 
 ```
 folderName: "Nome_da_pasta"
-file: Algum_arquvo
+file: Algum_arquivo
 ```
 
 ##
 
-FORM FIELDS:
 
-token: OS13IqWgviSFtmoXFltxXmsetZQ45mbx
+**Listagem de arquivos**:
 
-folderId: pegar info do banco de dados
+Método: `GET`
 
-FORM FILE:
+Endpoint: `/api/v1/files`
 
-file
+Exemplo de resposta:
 
-const request = `
-    curl -X POST \
+```
+[
+  {
+    _id:	String
+    folderParentId:	String
+    fileId:	String
+    name:	String
+  }
+]
+```
 
-     --url 'https://store3.gofile.io/uploadFile' \
-
-     --header 'Content-Type: multipart/form-data'
-
-     --data-raw 'token=${process.env.GOFILE_TOKEN}&folderId=${folderParent}'
-
-     -F file=${filePath}
-    `
+##
