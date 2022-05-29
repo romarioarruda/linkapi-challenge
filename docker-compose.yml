@@ -16,7 +16,7 @@ services:
     container_name: linkapi_app
     restart: always
     ports:
-      - "4000"
+      - "4000:4000"
     command:
       - npm
       - start
