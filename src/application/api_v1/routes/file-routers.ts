@@ -47,7 +47,7 @@ fileRouters.post(
 fileRouters.get('/api/v1/folders', async (_req, res: Response) => {
   const folders = await listFolders()
 
-  if (!folders) {
+  if (!folders.length) {
     return res.json({
       total: 0,
       folders: [],
