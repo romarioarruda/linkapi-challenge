@@ -14,6 +14,10 @@
 $ docker-compose up -d
 ```
 
+Para ver os logs no docker, rode:
+
+`docker-compose logs -f`
+
 ##
 
 Containers:
