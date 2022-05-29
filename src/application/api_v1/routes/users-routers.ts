@@ -6,7 +6,7 @@ const usersRouters = express.Router()
 usersRouters.get('/api/v1/users', async (_req: Request, res: Response) => {
   const users = await getUsers()
 
-  if (!users) {
+  if (!users.length) {
     return res.json({
       total: 0,
       users: [],
