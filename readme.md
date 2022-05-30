@@ -14,26 +14,68 @@
 $ docker-compose up -d
 ```
 
-Para ver os logs no docker, rode:
+**Para ver os logs no docker**
 
-`docker-compose logs -f`
+```
+$ docker-compose logs -f
+```
 
 ##
 
-Containers:
+**Containers**:
 
 - Um container estará rodando o mongodb `(porta 27017)`
 - Um container estará rodando a aplicação `(porta 4000)`
 
 ##
 
-**Funcionamente**:
+**Funcionamento**:
 
-- Acesse a aplicação em http://localhost:4000
+- Aplicação disponível em http://localhost:4000
 - O serviço de atualização dos usuários é ativado assim que o servidor sobe
 - Depois disso, o serviço roda a cada 5 minutos (todos os dias)
 
 ##
+
+### Requisitos para commitar alterações/atualizações:
+
+**Atualizando dependências**:
+
+```
+$ npm install
+
+$ npm run prepare
+```
+
+**Gerando novo commit**:
+
+No Linux/Mac
+```
+$ git commit
+```
+
+No Windows
+
+```
+$ git cz
+```
+
+Será listado alguns tipos de commit.
+
+Complete os passos que aparecerem.
+
+##
+
+
+**Links de referências**:
+
+- https://github.com/commitizen/cz-cli
+
+- https://typicode.github.io/husky/#/
+
+
+##
+
 
 ### Rotas de api
 
@@ -41,7 +83,7 @@ Base URL: `http://localhost:4000`
 
 ##
 
-**Lista de usuários**:
+**Listar usuários**:
 
 Método: `GET`
 
