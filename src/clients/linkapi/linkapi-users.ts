@@ -14,6 +14,7 @@ export default class LinkApiUsers {
   private page = 1
 
   public async getUsers(): Promise<ILinkApiUser[]> {
+    let page = this.page
     console.log(`Página: ${this.page}`)
     try {
       const users = await http.get(
@@ -26,8 +27,15 @@ export default class LinkApiUsers {
         : users.data
 
       this.page++
-      return data.usersList.item ?? []
+
+      if (data?.usersList?.item.length) {
+        return data.usersList.item
+      }
+
+      this.page = 1
+      return []
     } catch (error) {
+      this.page = page
       return []
     }
   }
