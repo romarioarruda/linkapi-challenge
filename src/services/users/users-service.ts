@@ -1,17 +1,15 @@
+import { UserRepository } from '../../domain/repositories/user-repository'
 import { IUser } from '../../interfaces/IUser'
-import MongoUserRepository from '../../repositories/mongo-user-repository'
 
-const repository = new MongoUserRepository()
-
-const exists = async (email: string) => {
+const exists = async (email: string, repository: UserRepository) => {
   return repository.exists(email)
 }
 
-const getUsers = async () => {
+const getUsers = async (repository: UserRepository) => {
   return repository.findUsers()
 }
 
-const insertMany = async (lista: IUser[]) => {
+const insertMany = async (lista: IUser[], repository: UserRepository) => {
   return repository.insertMany(lista)
 }
 
