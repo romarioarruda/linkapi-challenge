@@ -5,6 +5,8 @@ import { createReadStream, unlink } from 'fs'
 import { multerConfig } from '../../../config/multer'
 import GofileAPI from '../../../clients/gofile/gofile-api'
 import { IGoFileFolder, IGoFileFile } from '../../../interfaces/IGoFileApi'
+import MongoFolderRepository from '../../../repositories/mongo-folder-repository'
+import MongoFileRepository from '../../../repositories/mongo-file-repository'
 import {
   existsFolder,
   insertFolder,
@@ -23,7 +25,10 @@ fileRouters.post(
       if (!req.body.name)
         throw new Error('Precisa informar um nome para a pasta')
 
-      const hasFolder = await existsFolder(req.body.name)
+      const hasFolder = await existsFolder(
+        req.body.name,
+        new MongoFolderRepository(),
+      )
 
       if (hasFolder)
         throw new Error(`Já existe uma pasta com esse nome: ${req.body.name}`)
@@ -33,7 +38,10 @@ fileRouters.post(
       const { data } = await gofile.CreateFolder(req.body.name)
       const folder = data.data as IGoFileFolder
 
-      await insertFolder({ folderId: folder.id, name: folder.name })
+      await insertFolder(
+        { folderId: folder.id, name: folder.name },
+        new MongoFolderRepository(),
+      )
 
       res.json({ message: 'Pasta criada com sucesso!' })
     } catch (error) {
@@ -45,7 +53,7 @@ fileRouters.post(
 )
 
 fileRouters.get('/api/v1/folders', async (_req, res: Response) => {
-  const folders = await listFolders()
+  const folders = await listFolders(new MongoFolderRepository())
 
   if (!folders.length) {
     return res.json({
@@ -69,7 +77,10 @@ fileRouters.post(
         throw Error('Informe o nome da pasta onde será salvo o arquivo')
       if (!path) throw Error('Escolha um arquivo!')
 
-      const getFolder = await findFolder(folderName)
+      const getFolder = await findFolder(
+        folderName,
+        new MongoFolderRepository(),
+      )
 
       if (!getFolder?.folderId) {
         throw Error(
@@ -87,11 +98,14 @@ fileRouters.post(
       const { data } = await gofile.UploadFile(formData)
       const fileSaved = data.data as IGoFileFile
 
-      await insertFile({
-        folderParentId: fileSaved.parentFolder,
-        fileId: fileSaved.fileId,
-        name: fileSaved.fileName,
-      })
+      await insertFile(
+        {
+          folderParentId: fileSaved.parentFolder,
+          fileId: fileSaved.fileId,
+          name: fileSaved.fileName,
+        },
+        new MongoFileRepository(),
+      )
 
       unlink(path, (err) => {
         if (err) throw Error()
@@ -110,7 +124,7 @@ fileRouters.post(
 )
 
 fileRouters.get('/api/v1/files', async (_req, res: Response) => {
-  const files = await listFiles()
+  const files = await listFiles(new MongoFileRepository())
 
   if (!files.length) {
     return res.json({

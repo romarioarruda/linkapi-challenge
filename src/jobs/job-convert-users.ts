@@ -4,6 +4,7 @@ import { MesesDoAno } from '../enums/months-of-year'
 import { HorasDoDia } from '../enums/hours-of-day'
 import LinkApiUsers from '../clients/linkapi/linkapi-users'
 import { Users } from '../domain/Users'
+import MongoUserRepository from '../repositories/mongo-user-repository'
 import { exists, insertMany } from '../services/users/users-service'
 
 const MINUTE = '*/5' //  => roda a cada 5 minutos
@@ -23,7 +24,7 @@ async function runJob(): Promise<void> {
   const apiUserList = await linkApi.getUsers()
 
   for (let user of apiUserList) {
-    const hasUser = await exists(user.email._text)
+    const hasUser = await exists(user.email._text, new MongoUserRepository())
     if (hasUser) {
       console.log('user já existe, pulando...')
       continue
@@ -46,7 +47,7 @@ async function runJob(): Promise<void> {
     )
   }
 
-  await insertMany(usersEntity.lista)
+  await insertMany(usersEntity.lista, new MongoUserRepository())
 
   console.log('Busca finalizada.')
 }
