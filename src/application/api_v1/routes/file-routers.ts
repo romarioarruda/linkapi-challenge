@@ -3,8 +3,6 @@ import multer from 'multer'
 import FormData from 'form-data'
 import { createReadStream, unlink } from 'fs'
 import { multerConfig } from '../../../config/multer'
-import GofileAPI from '../../../clients/gofile/gofile-api'
-import { IGoFileFolder, IGoFileFile } from '../../../interfaces/IGoFileApi'
 import MongoFolderRepository from '../../../repositories/mongo-folder-repository'
 import MongoFileRepository from '../../../repositories/mongo-file-repository'
 import {
@@ -14,6 +12,8 @@ import {
   findFolder,
   insertFile,
   listFiles,
+  apiCreateFolder,
+  apiCreateFile,
 } from '../../../services/files/files-service'
 
 const fileRouters = express.Router()
@@ -22,21 +22,20 @@ fileRouters.post(
   '/api/v1/createFolder',
   async (req: Request, res: Response) => {
     try {
-      if (!req.body.name)
+      if (!req.body.name) {
         throw new Error('Precisa informar um nome para a pasta')
+      }
 
       const hasFolder = await existsFolder(
         req.body.name,
         new MongoFolderRepository(),
       )
 
-      if (hasFolder)
+      if (hasFolder) {
         throw new Error(`Já existe uma pasta com esse nome: ${req.body.name}`)
+      }
 
-      const gofile = new GofileAPI()
-
-      const { data } = await gofile.CreateFolder(req.body.name)
-      const folder = data.data as IGoFileFolder
+      const folder = await apiCreateFolder(req.body.name)
 
       await insertFolder(
         { folderId: folder.id, name: folder.name },
@@ -70,11 +69,13 @@ fileRouters.post(
   multer(multerConfig).single('file'),
   async (req: Request, res: Response) => {
     const path: string = req?.file?.path || ''
-    try {
-      const folderName = req?.body?.folderName || null
+    const folderName = req?.body?.folderName || null
 
-      if (!folderName)
+    try {
+      if (!folderName) {
         throw Error('Informe o nome da pasta onde será salvo o arquivo')
+      }
+
       if (!path) throw Error('Escolha um arquivo!')
 
       const getFolder = await findFolder(
@@ -89,14 +90,13 @@ fileRouters.post(
       }
 
       const stream = createReadStream(path)
-      const gofile = new GofileAPI()
       const formData = new FormData()
 
       formData.append('token', process.env.GOFILE_TOKEN)
       formData.append('folderId', getFolder.folderId)
       formData.append('file', stream)
-      const { data } = await gofile.UploadFile(formData)
-      const fileSaved = data.data as IGoFileFile
+
+      const fileSaved = await apiCreateFile(formData)
 
       await insertFile(
         {
