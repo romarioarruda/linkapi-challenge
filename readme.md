@@ -113,7 +113,7 @@ Exemplo de resposta:
 
 Método: `POST`
 
-Endpoint: `/api/v1/createFolder`
+Endpoint: `/api/v1/folders`
 
 Payload:
 
@@ -159,7 +159,7 @@ Exemplo de resposta:
 
 Método: `POST`
 
-Endpoint: `/api/v1/uploadFile`
+Endpoint: `/api/v1/files`
 
 Form-data:
 
