@@ -4,6 +4,7 @@
 
 **Requisitos para rodar a aplicação**:
 
+- Renomeie o arquivo `.env.example` para `.env`
 - Docker e Docker-compose instalados
 
 ##
