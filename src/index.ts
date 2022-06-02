@@ -4,12 +4,15 @@ dotenv.config()
 
 import { mongoOpenConnection, mongoCloseConnection } from './config/mongodb'
 import jobConvertUsers from './jobs/job-convert-users'
-import './application/api_v1'
+import apiV1 from './application/api_v1'
 
 // Funçoes de inicialização do sistema
 mongoOpenConnection()
-
-jobConvertUsers()
+  .then((_) => {
+    jobConvertUsers()
+    apiV1()
+  })
+  .catch((err) => console.error('DB CONECTION ERRO: ', String(err)))
 
 //Garantindo o uptime do serviço
 
@@ -26,11 +29,11 @@ process.on('unhandledRejection', (error) => {
 //Gracefull shutdown => Garantindo o encerramento de toda a aplicação corretamente.
 function graceFullShutDown(event: string) {
   return async (code: number) => {
-    console.log(`\n ${event} => signal received with code: ${code} \n`)
+    console.log(`\n${event} => signal received with code: ${code} \n`)
 
     await mongoCloseConnection()
 
-    process.exit(code)
+    process.exit(0)
   }
 }
 
@@ -41,5 +44,5 @@ process.on('SIGINT', graceFullShutDown('SIGINT'))
 process.on('SIGTERM', graceFullShutDown('SIGTERM'))
 
 process.on('exit', (code: number) => {
-  console.log(`\n exit signal received with code: ${code} \n`)
+  console.log(`\nexit signal received with code: ${code} \n`)
 })
