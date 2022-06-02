@@ -18,38 +18,35 @@ import {
 
 const fileRouters = express.Router()
 
-fileRouters.post(
-  '/api/v1/createFolder',
-  async (req: Request, res: Response) => {
-    try {
-      if (!req.body.name) {
-        throw new Error('Precisa informar um nome para a pasta')
-      }
-
-      const hasFolder = await existsFolder(
-        req.body.name,
-        new MongoFolderRepository(),
-      )
-
-      if (hasFolder) {
-        throw new Error(`Já existe uma pasta com esse nome: ${req.body.name}`)
-      }
-
-      const folder = await apiCreateFolder(req.body.name)
-
-      await insertFolder(
-        { folderId: folder.id, name: folder.name },
-        new MongoFolderRepository(),
-      )
-
-      res.json({ message: 'Pasta criada com sucesso!' })
-    } catch (error) {
-      const status = error?.response?.status || 400
-      const message = error?.response?.data || String(error)
-      res.status(status).json({ message })
+fileRouters.post('/api/v1/folders', async (req: Request, res: Response) => {
+  try {
+    if (!req.body.name) {
+      throw new Error('Precisa informar um nome para a pasta')
     }
-  },
-)
+
+    const hasFolder = await existsFolder(
+      req.body.name,
+      new MongoFolderRepository(),
+    )
+
+    if (hasFolder) {
+      throw new Error(`Já existe uma pasta com esse nome: ${req.body.name}`)
+    }
+
+    const folder = await apiCreateFolder(req.body.name)
+
+    await insertFolder(
+      { folderId: folder.id, name: folder.name },
+      new MongoFolderRepository(),
+    )
+
+    res.json({ message: 'Pasta criada com sucesso!' })
+  } catch (error) {
+    const status = error?.response?.status || 400
+    const message = error?.response?.data || String(error)
+    res.status(status).json({ message })
+  }
+})
 
 fileRouters.get('/api/v1/folders', async (_req, res: Response) => {
   const folders = await listFolders(new MongoFolderRepository())
@@ -65,7 +62,7 @@ fileRouters.get('/api/v1/folders', async (_req, res: Response) => {
 })
 
 fileRouters.post(
-  '/api/v1/uploadFile',
+  '/api/v1/files',
   multer(multerConfig).single('file'),
   async (req: Request, res: Response) => {
     const path: string = req?.file?.path || ''
