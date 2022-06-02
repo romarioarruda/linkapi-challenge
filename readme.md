@@ -1,4 +1,15 @@
-### Desafio LinkApi
+### LinkApi serviço de automação e gerenciamento de arquivos
+
+##
+
+**Funcionamento**:
+
+- Aplicação disponível em http://localhost:4000
+- O serviço consome uma api de usuário de terceiros
+- O serviço que atualiza os usuários é ativado assim que o servidor sobe
+- Depois disso, o serviço roda a cada 5 minutos (todos os dias)
+- O serviço gerencia arquivos no GoFile API (https://gofile.io/)
+
 
 ##
 
@@ -25,18 +36,10 @@ $ docker-compose logs -f
 
 **Containers**:
 
-- Um container estará rodando o mongodb `(porta 27017)`
 - Um container estará rodando a aplicação `(porta 4000)`
 
 ##
 
-**Funcionamento**:
-
-- Aplicação disponível em http://localhost:4000
-- O serviço de atualização dos usuários é ativado assim que o servidor sobe
-- Depois disso, o serviço roda a cada 5 minutos (todos os dias)
-
-##
 
 ### Requisitos para commitar alterações/atualizações:
 
