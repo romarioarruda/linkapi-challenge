@@ -2,7 +2,7 @@ import dotenv from 'dotenv'
 
 dotenv.config()
 
-import { mongoOpenConnection } from './config/mongodb'
+import { mongoOpenConnection, mongoCloseConnection } from './config/mongodb'
 import jobConvertUsers from './jobs/job-convert-users'
 import './application/api_v1'
 
@@ -21,4 +21,25 @@ process.on('uncaughtException', (error, origin) => {
 //2- Em caso de promises não tratadas, o sistema lança um warning que poderia quebrar a execução.
 process.on('unhandledRejection', (error) => {
   console.log(`\n unhandledRejection signal received: \n ${error}`)
+})
+
+//Gracefull shutdown => Garantindo o encerramento de toda a aplicação corretamente.
+function graceFullShutDown(event: string) {
+  return async (code: number) => {
+    console.log(`\n ${event} => signal received with code: ${code} \n`)
+
+    await mongoCloseConnection()
+
+    process.exit(code)
+  }
+}
+
+// disparado  no ctrl + c
+process.on('SIGINT', graceFullShutDown('SIGINT'))
+
+// disparado no kill
+process.on('SIGTERM', graceFullShutDown('SIGTERM'))
+
+process.on('exit', (code: number) => {
+  console.log(`\n exit signal received with code: ${code} \n`)
 })
