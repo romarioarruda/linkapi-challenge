@@ -28,8 +28,12 @@ const insertFolder = async (folder: IFolder, folderRepo: FolderRepository) => {
   return folderRepo.insertOne(folder)
 }
 
-const listFolders = async (folderRepo: FolderRepository) => {
-  return folderRepo.findMany()
+const listFolders = async (
+  page: number,
+  limit: number,
+  folderRepo: FolderRepository,
+) => {
+  return folderRepo.findMany(page, limit)
 }
 
 const findFolder = async (name: string, folderRepo: FolderRepository) => {
@@ -54,8 +58,12 @@ const insertFile = async (file: IFile, fileRepo: FileRepository) => {
   return fileRepo.insertOne(file)
 }
 
-const listFiles = async (fileRepo: FileRepository) => {
-  return fileRepo.findMany()
+const listFiles = async (
+  page: number,
+  limit: number,
+  fileRepo: FileRepository,
+) => {
+  return fileRepo.findMany(page, limit)
 }
 
 export {

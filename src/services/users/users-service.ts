@@ -5,8 +5,12 @@ const exists = async (email: string, repository: UserRepository) => {
   return repository.exists(email)
 }
 
-const getUsers = async (repository: UserRepository) => {
-  return repository.findUsers()
+const getUsers = async (
+  page: number,
+  limit: number,
+  repository: UserRepository,
+) => {
+  return repository.findMany(page, limit)
 }
 
 const insertMany = async (lista: IUser[], repository: UserRepository) => {
