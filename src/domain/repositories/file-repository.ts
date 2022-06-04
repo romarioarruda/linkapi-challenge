@@ -1,6 +1,6 @@
 import { IFile } from '../../interfaces/IFile'
 
 export interface FileRepository {
-  findMany(): Promise<IFile[]>
+  findMany(page: number, limit: number): Promise<IFile[]>
   insertOne(file: IFile): Promise<boolean>
 }
