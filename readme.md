@@ -1,4 +1,4 @@
-### LinkApi serviço de automação e gerenciamento de arquivos
+### Serviço de automação e gerenciamento de arquivos
 
 ##
 
