@@ -4,8 +4,10 @@ import MongoUserRepository from '../../../repositories/mongo-user-repository'
 
 const usersRouters = express.Router()
 
-usersRouters.get('/api/v1/users', async (_req: Request, res: Response) => {
-  const users = await getUsers(new MongoUserRepository())
+usersRouters.get('/api/v1/users', async (req: Request, res: Response) => {
+  const page = Number(req?.query?.page) || 1
+
+  const users = await getUsers(page, 10, new MongoUserRepository())
 
   if (!users.length) {
     return res.json({

@@ -48,8 +48,10 @@ fileRouters.post('/api/v1/folders', async (req: Request, res: Response) => {
   }
 })
 
-fileRouters.get('/api/v1/folders', async (_req, res: Response) => {
-  const folders = await listFolders(new MongoFolderRepository())
+fileRouters.get('/api/v1/folders', async (req, res: Response) => {
+  const page = Number(req?.query?.page) || 1
+
+  const folders = await listFolders(page, 10, new MongoFolderRepository())
 
   if (!folders.length) {
     return res.json({
@@ -120,8 +122,10 @@ fileRouters.post(
   },
 )
 
-fileRouters.get('/api/v1/files', async (_req, res: Response) => {
-  const files = await listFiles(new MongoFileRepository())
+fileRouters.get('/api/v1/files', async (req, res: Response) => {
+  const page = Number(req?.query?.page) || 1
+
+  const files = await listFiles(page, 10, new MongoFileRepository())
 
   if (!files.length) {
     return res.json({
