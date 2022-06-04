@@ -25,9 +25,14 @@ export default class MongoUserRepository implements UserRepository {
     }
   }
 
-  public async findUsers(): Promise<IUser[]> {
+  public async findMany(
+    page: number = 0,
+    limit: number = 10,
+  ): Promise<IUser[]> {
     try {
-      const users = await Users.find({}).exec()
+      const p = page > 0 ? page - 1 : 0
+      const skip = p * limit
+      const users = await Users.find({}).skip(skip).limit(limit).exec()
 
       return users ? users : []
     } catch (_error) {

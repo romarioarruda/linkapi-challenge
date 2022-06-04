@@ -3,9 +3,17 @@ import { IFile } from '../interfaces/IFile'
 import { Files } from '../config/models/files'
 
 export default class MongoFileRepository implements FileRepository {
-  public async findMany(): Promise<IFile[]> {
+  public async findMany(
+    page: number = 0,
+    limit: number = 10,
+  ): Promise<IFile[]> {
     try {
-      return Files.find({}).exec()
+      const p = page > 0 ? page - 1 : 0
+      const skip = p * limit
+
+      const files = await Files.find({}).skip(skip).limit(limit).exec()
+
+      return files ? files : []
     } catch (error) {
       return []
     }

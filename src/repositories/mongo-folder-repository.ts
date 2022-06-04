@@ -23,9 +23,17 @@ export default class MongoFolderRepository implements FolderRepository {
     }
   }
 
-  public async findMany(): Promise<IFolder[]> {
+  public async findMany(
+    page: number = 0,
+    limit: number = 10,
+  ): Promise<IFolder[]> {
     try {
-      return Folders.find({}).exec()
+      const p = page > 0 ? page - 1 : 0
+      const skip = p * limit
+
+      const folders = await Folders.find({}).skip(skip).limit(limit).exec()
+
+      return folders ? folders : []
     } catch (error) {
       return []
     }
