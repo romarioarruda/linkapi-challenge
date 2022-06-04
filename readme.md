@@ -91,7 +91,9 @@ Base URL: `http://localhost:4000`
 
 Método: `GET`
 
-Endpoint: `/api/v1/users`
+Endpoint: `/api/v1/users?page=1`
+
+Limite: `10 itens por página`
 
 Exemplo de resposta:
 
@@ -142,7 +144,9 @@ Exemplo de resposta:
 
 Método: `GET`
 
-Endpoint: `/api/v1/folders`
+Endpoint: `/api/v1/folders?page=1`
+
+Limite: `10 itens por página`
 
 Exemplo de resposta:
 
@@ -179,7 +183,9 @@ file: Algum_arquivo
 
 Método: `GET`
 
-Endpoint: `/api/v1/files`
+Endpoint: `/api/v1/files?page=1`
+
+Limite: `10 itens por página`
 
 Exemplo de resposta:
 
