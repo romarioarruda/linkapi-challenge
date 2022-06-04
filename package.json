@@ -1,7 +1,6 @@
 {
   "name": "linkapi-challenge",
   "version": "0.0.1",
-  "private": true,
   "main": "src/index.ts",
   "scripts": {
     "prepare": "husky install",
